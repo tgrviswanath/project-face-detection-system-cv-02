@@ -18,8 +18,11 @@ _net = None
 def _get_net():
     global _net
     if _net is None:
-        download_models(settings.PROTOTXT_PATH, settings.CAFFEMODEL_PATH)
-        _net = cv2.dnn.readNetFromCaffe(settings.PROTOTXT_PATH, settings.CAFFEMODEL_PATH)
+        try:
+            download_models(settings.PROTOTXT_PATH, settings.CAFFEMODEL_PATH)
+            _net = cv2.dnn.readNetFromCaffe(settings.PROTOTXT_PATH, settings.CAFFEMODEL_PATH)
+        except Exception as e:
+            raise FileNotFoundError(f"Face detection model unavailable: {e}")
     return _net
 
 
